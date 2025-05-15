@@ -96,18 +96,18 @@ def main():
     learning_rate = 1e-3
     batch_size = 1024
     logging_iter = 300
-    model_save_dir = "/home/dc/self_studies/gpt_scratch/checkpoints/"
+    model_save_dir = "/home/dc/self_studies/baby_gpt/checkpoints/"
     device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 
     # ___ Data preparation ___
     tokenizer = CharTokenizer()
     dset_train = TinyShakespeare(
         tokenizer, "train", max_context_len=MODEL_CONFIG["max_context_window"], train_val_ratio=0.9,
-        data_path="/home/dc/self_studies/gpt_scratch/data/xuandieutho.txt",
+        data_path="/home/dc/self_studies/baby_gpt/data/xuandieutho.txt",
     )
     dset_val = TinyShakespeare(
         tokenizer, "val", max_context_len=MODEL_CONFIG["max_context_window"], train_val_ratio=0.9,
-        data_path="/home/dc/self_studies/gpt_scratch/data/xuandieutho.txt",
+        data_path="/home/dc/self_studies/baby_gpt/data/xuandieutho.txt",
     )
     
     train_dataloader = DataLoader(

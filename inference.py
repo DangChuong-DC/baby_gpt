@@ -7,7 +7,7 @@ from tokenizer import CharTokenizer
 from model.gpt import BabyGPT
 from model.config import MODEL_CONFIG
 
-MODEL_PATH = "/home/dc/self_studies/gpt_scratch/checkpoints/babygpt_thoxuandieu_weights_011.pt"
+MODEL_PATH = "/home/dc/self_studies/baby_gpt/checkpoints/babygpt_thoxuandieu_weights_011.pt"
 
 
 def sample_with_temperature(logits: torch.Tensor, temperature: float):

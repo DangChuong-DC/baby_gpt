@@ -47,7 +47,7 @@ class CharTokenizer:
 
 
 if __name__ == "__main__":
-    DATA_PATH = "/home/dc/self_studies/gpt_scratch/data/xuandieutho.txt"
+    DATA_PATH = "/home/dc/self_studies/baby_gpt/data/xuandieutho.txt"
 
     with open(DATA_PATH, "r") as _f:
         data = _f.read()
