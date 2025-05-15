@@ -39,8 +39,7 @@ def main():
 
     generated_text = "\n"
     while True:
-        text = generated_text[-gpt.max_context_window:]
-        token_ids = tokenizer.encode(text).to(device=device)
+        token_ids = tokenizer.encode(generated_text).to(device=device)
 
         causal = torch.ones(1, token_ids.size(1), token_ids.size(1))
         causal = torch.tril(causal).to(dtype=torch.bool, device=device)
@@ -50,11 +49,12 @@ def main():
         new_token_id = sample_with_temperature(logits, 0.7)
         new_char = tokenizer.decode(new_token_id.cpu())
         generated_text += new_char
+        generated_text = generated_text[-gpt.max_context_window:]
 
-        print(generated_text)
-        print("...💬")
+        print(generated_text[-1], end="", flush=True)
+        # print("...💬")
 
-        time.sleep(0.1)
+        time.sleep(0.01)
 
 
 if __name__ == "__main__":
