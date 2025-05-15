@@ -27,4 +27,4 @@ python inference.py
 
 ## Data
 The model is trained on a small dataset of text, which can be found in the `data` directory. The dataset is a collection of text which is poem of Xuan Dieu, a famous Vietnamese poet.
-I copied the text from [this website](https://www.thivien.net/Xuan-Dieu/Th%C6%B0-vi%E1%BB%87t-Xu%C3%A2n-Dieu/poem-1) and saved it in a file called `data/poem.txt`. The dataset is small, but it is enough to demonstrate the capabilities of the model. I will add more data in the future if I have time.
+I copied the text from [this website](https://www.thivien.net/) by searching for Xuân Diệu, then saved it in a file called `data/xuandieutho.txt`. The dataset is small, but it is enough to demonstrate the capabilities of the model. I might add more data in the future if I have time.
