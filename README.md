@@ -3,6 +3,8 @@
 ## Overview
 Baby GPT is a simple implementation of a Generative Pre-trained Transformer (GPT) model. It is designed to be easy to understand and modify, making it a great starting point for those interested in learning about transformer models and natural language processing.
 
+This is inspired greatly by the work of Andrej Karpathy and his [minGPT](https://github.com/karpathy/nanoGPT)
+
 ## How to Use
 
 ### To train the model:
@@ -18,3 +20,7 @@ python train.py
 ```bash
 python inference.py
 ```
+
+## Model Architecture
+
+![plot](./assets/model_architecture.png)
