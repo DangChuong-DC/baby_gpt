@@ -94,7 +94,7 @@ def main():
     # ___ Training hyperparameters ___
     num_epoch = 13
     learning_rate = 1e-3
-    batch_size = 1024
+    batch_size = 256
     logging_iter = 300
     model_save_dir = "/home/dc/self_studies/baby_gpt/checkpoints/"
     device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
