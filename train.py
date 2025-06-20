@@ -92,29 +92,40 @@ def eval(
 
 def main():
     # ___ Training hyperparameters ___
-    num_epoch = 13
-    learning_rate = 1e-3
-    batch_size = 256
-    logging_iter = 300
-    model_save_dir = "/home/dc/self_studies/baby_gpt/checkpoints/"
+    num_epoch = 9 # 13
+    max_learning_rate = 5e-4
+    min_learning_rate = 6e-5
+    batch_size = 512 # 256
+    logging_iter = 900
+    model_save_dir = f"/home/dc/self_studies/baby_gpt/checkpoints/"
+    model_id = "20250620_001"
     device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 
+    # create model save directory if not exists
+    model_save_dir = Path(model_save_dir) / model_id
+    if not model_save_dir.exists():
+        model_save_dir.mkdir(parents=True, exist_ok=True)
+        print(f"✅ Created model save directory: {model_save_dir}")
+
     # ___ Data preparation ___
-    tokenizer = CharTokenizer()
+    ### Uncommented data_path lines below for Vietnamese dataset
+    tokenizer = CharTokenizer("en")  # "en" for English, "vi" for Vietnamese
     dset_train = TinyShakespeare(
         tokenizer, "train", max_context_len=MODEL_CONFIG["max_context_window"], train_val_ratio=0.9,
-        data_path="/home/dc/self_studies/baby_gpt/data/xuandieutho.txt",
+        # data_path="/home/dc/self_studies/baby_gpt/data/xuandieutho.txt",
+        data_path="/DATA01/dc/datasets/tiny_shakespeare/data.txt",
     )
     dset_val = TinyShakespeare(
         tokenizer, "val", max_context_len=MODEL_CONFIG["max_context_window"], train_val_ratio=0.9,
-        data_path="/home/dc/self_studies/baby_gpt/data/xuandieutho.txt",
+        # data_path="/home/dc/self_studies/baby_gpt/data/xuandieutho.txt",
+        data_path="/DATA01/dc/datasets/tiny_shakespeare/data.txt",
     )
     
     train_dataloader = DataLoader(
         dset_train, batch_size=batch_size, shuffle=True, collate_fn=collate_fn, num_workers=4
     )
     val_dataloader = DataLoader(
-        dset_val, batch_size=batch_size//2, shuffle=True, collate_fn=collate_fn, num_workers=2
+        dset_val, batch_size=batch_size*2, shuffle=True, collate_fn=collate_fn, num_workers=2
     )
 
 
@@ -131,10 +142,10 @@ def main():
     gpt.to(device=device)
 
     optimizer = AdamW(
-        gpt.parameters(), lr=learning_rate, betas=(0.9, 0.98), eps=1e-9
+        gpt.parameters(), lr=max_learning_rate, betas=(0.9, 0.95)
     )
     total_steps = num_epoch * len(train_dataloader)
-    lr_scheduler = CosineAnnealingLR(optimizer, total_steps, 1e-9)
+    lr_scheduler = CosineAnnealingLR(optimizer, total_steps, min_learning_rate)
     criterion = nn.CrossEntropyLoss()
 
     for e in range(num_epoch):
@@ -144,7 +155,7 @@ def main():
         )
 
         # after training loop
-        file_name = f"babygpt_thoxuandieu_weights_{e:03d}.pt"
+        file_name = f"babygpt_shakespeare_weights_{e:03d}.pt"
         model_save_path = Path(model_save_dir) / file_name
         torch.save(gpt.state_dict(), model_save_path)
         print(f"✅ Saved model weights to {model_save_path}")
