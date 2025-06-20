@@ -23,7 +23,11 @@ python inference.py
 
 ## Model Architecture
 
+#### General Architecture
 ![plot](./assets/model_architecture.png)
+
+#### Detailed Architecture
+![plot](./assets/Full_GPT_architecture.png)
 
 ## Data
 The model is trained on a small dataset of text, which can be found in the `data` directory. The dataset is a collection of text which is poem of Xuan Dieu, a famous Vietnamese poet.
