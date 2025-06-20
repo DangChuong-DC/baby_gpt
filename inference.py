@@ -7,7 +7,7 @@ from tokenizer import CharTokenizer
 from model.gpt import BabyGPT
 from model.config import MODEL_CONFIG
 
-MODEL_PATH = "/home/dc/self_studies/baby_gpt/checkpoints/babygpt_thoxuandieu_weights_011.pt"
+MODEL_PATH = "/home/dc/self_studies/baby_gpt/checkpoints/20250620_000/babygpt_shakespeare_weights_008.pt"
 
 
 def sample_with_temperature(logits: torch.Tensor, temperature: float):
@@ -20,7 +20,7 @@ def sample_with_temperature(logits: torch.Tensor, temperature: float):
 def main():
     device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 
-    tokenizer = CharTokenizer()
+    tokenizer = CharTokenizer("en")  # "en" for English, "vi" for Vietnamese
 
     gpt = BabyGPT(
         vocab_size=tokenizer.get_vocab_size(),

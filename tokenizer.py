@@ -1,15 +1,14 @@
+from typing import Literal
 import torch
 
-
-class CharTokenizer:
-    def __init__(self) -> None:
-        # self.vocab = [
-        #     "\n", " ", "!", "$", "&", "'", ",", "-", ".", "3", ":", ";", "?", "A", "B", "C", "D", 
-        #     "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", 
-        #     "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", 
-        #     "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
-        # ]
-        self.vocab = [
+LANGUAGE_VOCAB = {
+    "en": [
+            "\n", " ", "!", "$", "&", "'", ",", "-", ".", "3", ":", ";", "?", "A", "B", "C", "D", 
+            "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", 
+            "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", 
+            "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
+        ],
+    "vi": [
             '\n', ' ', '!', '(', ')', '*', ',', '-', '.', '1', '3', '4', '5', '9', ':', ';', '?', 
             'A', 'B', 'C', 'D', 'E', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 
             'V', 'X', 'Y', 'a', 'b', 'c', 'd', 'e', 'g', 'h', 'i', 'k', 'l', 'm', 'n', 'o', 'p', 
@@ -20,6 +19,12 @@ class CharTokenizer:
             'Ờ', 'ờ', 'Ở', 'ở', 'ỡ', 'ợ', 'ụ', 'ủ', 'ứ', 'ừ', 'Ử', 'ử', 'ữ', 'ự', 'ỷ', 'ỹ', '“', 
             '”'
         ]
+}
+
+class CharTokenizer:
+    def __init__(self, language: Literal["en", "vi"]) -> None:
+        self.vocab =  LANGUAGE_VOCAB[language]
+
         self.vocab_len = len(self.vocab)
         self.ctoi = {c: i for i, c in enumerate(self.vocab)}
         self.itoc = {i: c for i, c in enumerate(self.vocab)}
