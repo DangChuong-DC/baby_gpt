@@ -7,9 +7,9 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 
-class SelfAttention(nn.Module):
+class SimpleSelfAttention(nn.Module):
     def __init__(self, dropout_p: float = 0.0) -> None:
-        super(SelfAttention, self).__init__()
+        super(SimpleSelfAttention, self).__init__()
         self.dropout_p = dropout_p
 
     def forward(
@@ -25,9 +25,9 @@ class SelfAttention(nn.Module):
             B = qry.size(0)
             S_q, S_k = qry.size(-2), key.size(-2)
             attn_bias = torch.zeros(B, S_q, S_k, dtype=qry.dtype, device=qry.device)
-            attn_bias = attn_bias.masked_fill_(attn_mask.logical_not(), -math.inf) # (B, S_q, S_k)
+            attn_bias.masked_fill_(attn_mask.logical_not(), -math.inf) # (B, S_q, S_k)
             if qry.ndim == 4: # (B, H, S, D)
-                attn_bias = attn_bias.unsqueeze_(1)
+                attn_bias.unsqueeze_(1)
 
         scaled_dot_prod = torch.matmul(qry, key.transpose(-2, -1)) / math.sqrt(key.size(-1)) # (B, H, S_q, S_k)
         if attn_bias is not None:
@@ -58,7 +58,7 @@ class MultiHeadAttention(nn.Module):
         self.W_k = nn.Linear(d_model, d_model)
         self.W_v = nn.Linear(d_model, d_model)
 
-        self.attention = SelfAttention(dropout_p=attn_dropout_p)
+        self.attention = SimpleSelfAttention(dropout_p=attn_dropout_p)
 
         self.W_o = nn.Linear(d_model, d_model)
         self.dropout_p = out_dropout_p
