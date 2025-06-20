@@ -7,7 +7,7 @@ from tokenizer import CharTokenizer
 from model.gpt import BabyGPT
 from model.config import MODEL_CONFIG
 
-MODEL_PATH = "/home/dc/self_studies/baby_gpt/checkpoints/20250620_000/babygpt_shakespeare_weights_008.pt"
+MODEL_PATH = "/home/dc/self_studies/baby_gpt/checkpoints/20250620_002/babygpt_shakespeare_weights_008.pt"
 
 
 def sample_with_temperature(logits: torch.Tensor, temperature: float):
@@ -41,10 +41,11 @@ def main():
     while True:
         token_ids = tokenizer.encode(generated_text).to(device=device)
 
-        causal = torch.ones(1, token_ids.size(1), token_ids.size(1))
-        causal = torch.tril(causal).to(dtype=torch.bool, device=device)
+        # causal = torch.ones(1, token_ids.size(1), token_ids.size(1))
+        # causal = torch.tril(causal).to(dtype=torch.bool, device=device)
 
-        logits = gpt(token_ids, causal)
+        # logits = gpt(token_ids, causal)
+        logits = gpt(token_ids, None) # remove causal if you use flash attention
         logits = logits[:, -1, :]
         new_token_id = sample_with_temperature(logits, 0.7)
         new_char = tokenizer.decode(new_token_id.cpu())

@@ -3,7 +3,7 @@ import torch.nn as nn
 
 from .embedding import Embedding
 from .pos_encoding import PositionalEncoding
-from .attention import MHASubLayer
+from .attention import MHASubLayer, MHCASubLayer
 from .feedforward import FFNSubLayer
 
 
@@ -17,6 +17,7 @@ class BabyGPT(nn.Module):
         d_model: int = 512,
         d_ff: int = 2048,
         dropout_p: float = 0.0,
+        attn_sublayer: nn.Module = MHCASubLayer,
     ) -> None:
         super(BabyGPT, self).__init__()
         self.max_context_window = max_context_len
@@ -28,7 +29,7 @@ class BabyGPT(nn.Module):
 
         self.blocks = nn.ModuleList([])
         for _ in range(n_layer):
-            self.blocks.append(MHASubLayer(n_head=n_head, d_model=d_model, dropout_p=dropout_p))
+            self.blocks.append(attn_sublayer(n_head=n_head, d_model=d_model, dropout_p=dropout_p))
             self.blocks.append(FFNSubLayer(d_model=d_model, d_ff=d_ff, dropout_p=dropout_p))
         
         self.norm = nn.LayerNorm(d_model)

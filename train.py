@@ -98,7 +98,7 @@ def main():
     batch_size = 512 # 256
     logging_iter = 900
     model_save_dir = f"/home/dc/self_studies/baby_gpt/checkpoints/"
-    model_id = "20250620_001"
+    model_id = "20250620_002"
     device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 
     # create model save directory if not exists
